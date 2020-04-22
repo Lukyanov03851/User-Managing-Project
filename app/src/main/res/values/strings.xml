@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">UserManagingProject</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone number</string>
+<!--    <string name="phone_number_mask_country" translatable="false">+38</string>-->
+<!--    <string name="phone_number_country_code" translatable="false">38</string>-->
+    <string name="email">Email</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="error">Error</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_password_repeat">Repeat your password</string>
+    <string name="repeat_password_error">Password not equal</string>
+    <string name="name">Name</string>
+    <string name="name_hint">Enter your name</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="registration_success">Registration success</string>
+    <string name="my_profile">My profile</string>
+
+</resources>

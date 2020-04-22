@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#241F5A</color>
+    <color name="colorPrimaryDark">#241F5A</color>
+    <color name="colorAccent">#7ABD43</color>
+
+<!--    <color name="colorBaseGreen">#7ABD43</color>-->
+<!--    <color name="colorBaseBlue">#241F5A</color>-->
+    <color name="colorButtonDisabled">#ACB4CE</color>
+
+    <color name="textColor">#606060</color>
+    <color name="textHintColor">#FFC2C2C2</color>
+    <color name="inputErrorColor">#FFA7676F</color>
+    <color name="inputDefBackgroundColor">#F1F1F1</color>
+
+
+
+
+
+</resources>

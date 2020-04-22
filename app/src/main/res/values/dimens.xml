@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_activity_and_half">24dp</dimen>
+    <dimen name="margin_activity_double">32dp</dimen>
+
+    <dimen name="text_body">17sp</dimen>
+    <dimen name="text_label">15sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="margin_activity_half">8dp</dimen>
+    <dimen name="margin_view_small">4dp</dimen>
+    <dimen name="margin_activity">16dp</dimen>
+</resources>

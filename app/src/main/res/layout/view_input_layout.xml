@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_input_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_label"
+        android:paddingStart="@dimen/margin_activity_half"
+        android:paddingLeft="@dimen/margin_activity_half"
+        android:paddingEnd="@dimen/margin_activity_half"
+        android:paddingRight="@dimen/margin_activity_half"
+        android:textColor="@color/textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/margin_view_small"
+        />
+
+    <EditText
+        android:id="@+id/edt_input"
+        android:textColorHint="@color/textHintColor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        style="@style/MyEditTextStyle"
+        android:background="@drawable/input_selector_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_input_title"
+        />
+
+    <ImageView
+        android:id="@+id/img_input"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:srcCompat="@drawable/ic_error_icon"
+        android:padding="3dp"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_activity"
+        app:layout_constraintEnd_toEndOf="@+id/edt_input"
+        app:layout_constraintTop_toTopOf="@+id/edt_input"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_input"
+        />
+
+    <TextView
+        android:id="@+id/tvTooltip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/textColor"
+        android:visibility="gone"
+        android:paddingStart="@dimen/margin_activity_half"
+        android:paddingLeft="@dimen/margin_activity_half"
+        android:paddingEnd="@dimen/margin_activity_half"
+        android:paddingRight="@dimen/margin_activity_half"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_input"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
