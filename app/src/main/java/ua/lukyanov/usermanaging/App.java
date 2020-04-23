@@ -12,8 +12,6 @@ import ua.lukyanov.usermanaging.di.component.DaggerAppComponent;
 
 public class App extends Application implements HasAndroidInjector {
 
-
-
     @Inject
     DispatchingAndroidInjector<Object> androidInjector;
 
