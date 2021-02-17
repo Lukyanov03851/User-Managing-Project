@@ -1,8 +1,13 @@
 package ua.lukyanov.usermanaging.network.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginRequest {
 
+    @SerializedName("login")
     private final String login;
+
+    @SerializedName("password")
     private final String password;
 
     public LoginRequest(String login, String password) {

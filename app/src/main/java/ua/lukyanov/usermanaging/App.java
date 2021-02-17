@@ -1,6 +1,9 @@
 package ua.lukyanov.usermanaging;
 
 import android.app.Application;
+import android.content.Context;
+
+import java.net.ContentHandler;
 
 import javax.inject.Inject;
 
@@ -28,4 +31,5 @@ public class App extends Application implements HasAndroidInjector {
     public AndroidInjector<Object> androidInjector() {
         return androidInjector;
     }
+
 }

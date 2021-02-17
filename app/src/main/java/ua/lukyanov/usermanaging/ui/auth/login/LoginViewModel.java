@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ua.lukyanov.usermanaging.R;
+import ua.lukyanov.usermanaging.data.prefs.AppPreferenceHelper;
 import ua.lukyanov.usermanaging.network.ApiService;
 import ua.lukyanov.usermanaging.network.models.LoginRequest;
 import ua.lukyanov.usermanaging.network.models.LoginResponse;
@@ -23,17 +26,14 @@ public class LoginViewModel extends AndroidViewModel {
 
     private static final String TAG = "LoginViewModel";
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
-    private MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isSuccessLogin = new MutableLiveData<>();
-    private MutableLiveData<String> dataLoadingErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> passwordErrorMessage = new MutableLiveData<>();
+    public ObservableField<String> loginErrorMessage = new ObservableField<>();
+    public ObservableField<String> passwordErrorMessage = new ObservableField<>();
+    public ObservableBoolean isLoading = new ObservableBoolean();
 
-    public LiveData<Boolean> isLoading() {
-        return dataLoading;
-    }
+    private final MutableLiveData<Boolean> isSuccessLogin = new MutableLiveData<>();
+    private final MutableLiveData<String> dataLoadingErrorMessage = new MutableLiveData<>();
 
     public LiveData<Boolean> isSuccessLogin() {
         return isSuccessLogin;
@@ -41,14 +41,6 @@ public class LoginViewModel extends AndroidViewModel {
 
     public LiveData<String> getErrorMessage() {
         return dataLoadingErrorMessage;
-    }
-
-    public LiveData<String> getLoginErrorMessage() {
-        return loginErrorMessage;
-    }
-
-    public LiveData<String> getPasswordErrorMessage() {
-        return passwordErrorMessage;
     }
 
     @Inject
@@ -59,45 +51,56 @@ public class LoginViewModel extends AndroidViewModel {
 
     void makeLogin(String email, String password) {
         if (validateInputs(email, password)) {
-            dataLoading.setValue(true);
+            isLoading.set(true);
             apiService.login(new LoginRequest(email, password)).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-                    dataLoading.setValue(false);
-                    if (response.isSuccessful()) {
-                        LoginResponse loginResponse = response.body();
-                        Log.v(TAG, "LoginResponse = "+loginResponse);
-                        isSuccessLogin.setValue(true);
-                    } else {
-                        dataLoadingErrorMessage.setValue("Something was wrong");
-                    }
+                    isLoading.set(false);
+                    processLoginResponse(response);
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-                    dataLoading.setValue(false);
-                    dataLoadingErrorMessage.setValue("Something was wrong");
+                    Log.v(TAG, "onFailure");
+                    isLoading.set(false);
+                    dataLoadingErrorMessage.setValue(getApplication().getString(R.string.common_error));
                 }
 
             });
         }
     }
 
+    private void processLoginResponse(Response<LoginResponse> response){
+        LoginResponse loginResponse = response.body();
+        Log.v(TAG, "LoginResponse = "+loginResponse);
+
+        if (response.isSuccessful() && loginResponse != null) {
+            AppPreferenceHelper.setToken(getApplication(), loginResponse.getToken());
+            AppPreferenceHelper.setLogin(getApplication(), loginResponse.getEmail());
+            AppPreferenceHelper.setUserObjectId(getApplication(), loginResponse.getObjectId());
+            isSuccessLogin.setValue(true);
+        } else  {
+            dataLoadingErrorMessage.setValue(getApplication().getString(R.string.common_error));
+        }
+
+
+    }
+
     private boolean validateInputs(String email, String password) {
         boolean valid = true;
 
         if (TextUtils.isEmpty(email)) {
-            loginErrorMessage.setValue(getApplication().getString(R.string.enter_email));
+            loginErrorMessage.set(getApplication().getString(R.string.enter_email));
             valid = false;
         } else {
-            loginErrorMessage.setValue(null);
+            loginErrorMessage.set(null);
         }
 
         if (TextUtils.isEmpty(password)) {
-            passwordErrorMessage.setValue(getApplication().getString(R.string.enter_password));
+            passwordErrorMessage.set(getApplication().getString(R.string.enter_password));
             valid = false;
         } else {
-            passwordErrorMessage.setValue(null);
+            passwordErrorMessage.set(null);
         }
         return valid;
     }

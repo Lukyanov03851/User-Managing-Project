@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import ua.lukyanov.usermanaging.R;
 import ua.lukyanov.usermanaging.models.UserProperty;
 
 public class UserPropertiesAdapter extends RecyclerView.Adapter<UserPropertiesAdapter.ViewHolder> {
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView tvPropertyTitle;
         private final TextView tvPropertyValue;
@@ -29,16 +29,13 @@ public class UserPropertiesAdapter extends RecyclerView.Adapter<UserPropertiesAd
 
         void bind(UserProperty property) {
             tvPropertyTitle.setText(property.getTitle());
-            tvPropertyValue.setText(property.getValue());
+            if (property.getValue() != null) {
+                tvPropertyValue.setText(property.getValue());
+            }
         }
     }
 
-    private final ArrayList<UserProperty> properties = new ArrayList<>(Arrays.asList(
-            new UserProperty("Phone", "+38 096 489 62 73"),
-            new UserProperty("Email", "test_user_mail@gmail.com"),
-            new UserProperty("Password", "*********"),
-            new UserProperty("Age", "29")
-    ));
+    private final ArrayList<UserProperty> properties = new ArrayList<>();
 
     @NonNull
     @Override
@@ -57,7 +54,7 @@ public class UserPropertiesAdapter extends RecyclerView.Adapter<UserPropertiesAd
         return properties.size();
     }
 
-    public void setProperties(ArrayList<UserProperty> properties) {
+    public void setProperties(List<UserProperty> properties) {
         this.properties.clear();
         this.properties.addAll(properties);
         notifyDataSetChanged();

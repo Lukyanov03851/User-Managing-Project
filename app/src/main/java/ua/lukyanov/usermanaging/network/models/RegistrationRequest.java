@@ -1,9 +1,16 @@
 package ua.lukyanov.usermanaging.network.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RegistrationRequest {
 
+    @SerializedName("name")
     private final String name;
+
+    @SerializedName("email")
     private final String email;
+
+    @SerializedName("password")
     private final String password;
 
     public RegistrationRequest(String name, String email, String password) {

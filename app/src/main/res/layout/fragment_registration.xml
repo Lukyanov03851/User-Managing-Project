@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="ua.lukyanov.usermanaging.ui.auth.registration.RegistrationViewModel" />
@@ -18,7 +15,7 @@
         android:orientation="vertical">
         <ScrollView
             android:id="@+id/contentContainer"
-            android:visibility="@{viewModel.isLoading() == false ? View.VISIBLE : View.GONE}"
+            app:goneUnless="@{!viewModel.isLoading}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -37,31 +34,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/ic_logo"/>
 
-                <ua.lukyanov.usermanaging.views.TextInputView
+                <ua.lukyanov.usermanaging.views.BaseInputView
                     android:id="@+id/inputName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/margin_activity_double"
                     android:layout_marginStart="@dimen/margin_activity_and_half"
-                    android:layout_marginLeft="@dimen/margin_activity_and_half"
                     android:layout_marginEnd="@dimen/margin_activity_and_half"
-                    android:layout_marginRight="@dimen/margin_activity_and_half"
+                    app:inputTitle="@string/name"
+                    app:inputHint="@string/name_hint"
+                    app:inputError="@{viewModel.nameErrorMessage}"
                     app:layout_constraintTop_toBottomOf="@+id/imgLogo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     />
 
-                <ua.lukyanov.usermanaging.views.TextInputView
+                <ua.lukyanov.usermanaging.views.BaseInputView
                     android:id="@+id/inputLogin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/margin_activity_double"
                     android:layout_marginStart="@dimen/margin_activity_and_half"
-                    android:layout_marginLeft="@dimen/margin_activity_and_half"
                     android:layout_marginEnd="@dimen/margin_activity_and_half"
-                    android:layout_marginRight="@dimen/margin_activity_and_half"
+                    app:inputTitle="@string/email"
+                    android:inputType="textEmailAddress"
+                    app:inputError="@{viewModel.loginErrorMessage}"
                     app:layout_constraintTop_toBottomOf="@+id/inputName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +76,8 @@
                     android:layout_marginLeft="@dimen/margin_activity_and_half"
                     android:layout_marginEnd="@dimen/margin_activity_and_half"
                     android:layout_marginRight="@dimen/margin_activity_and_half"
+                    app:inputTitle="@string/password"
+                    app:inputError="@{viewModel.passwordErrorMessage}"
                     app:layout_constraintTop_toBottomOf="@+id/inputLogin"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -89,9 +90,9 @@
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/margin_view_small"
                     android:layout_marginStart="@dimen/margin_activity_and_half"
-                    android:layout_marginLeft="@dimen/margin_activity_and_half"
                     android:layout_marginEnd="@dimen/margin_activity_and_half"
-                    android:layout_marginRight="@dimen/margin_activity_and_half"
+                    app:inputTitle="@string/repeat_password"
+                    app:inputError="@{viewModel.passwordRepeatErrorMessage}"
                     app:layout_constraintTop_toBottomOf="@+id/inputPassword"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -104,9 +105,7 @@
                     style="@style/MyButtonFilledStyle"
                     android:layout_marginTop="@dimen/margin_activity_and_half"
                     android:layout_marginStart="@dimen/margin_activity_and_half"
-                    android:layout_marginLeft="@dimen/margin_activity_and_half"
                     android:layout_marginEnd="@dimen/margin_activity_and_half"
-                    android:layout_marginRight="@dimen/margin_activity_and_half"
                     android:text="@string/registration"
                     app:layout_constraintTop_toBottomOf="@+id/inputPasswordRepeat"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -134,19 +133,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <LinearLayout
+        <include
             android:id="@+id/progressLoading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="@{viewModel.isLoading() == true ? View.VISIBLE : View.GONE}"
-            >
-            <ProgressBar
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            layout="@layout/layout_progress_loading"
+            app:goneUnless="@{viewModel.isLoading}"/>
+
     </LinearLayout>
 
 

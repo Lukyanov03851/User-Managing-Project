@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<declare-styleable name="BaseInputView">
+		<attr format="string" name="inputTitle"/>
+		<attr format="string" name="inputHint"/>
+		<attr format="string" name="inputSubtitle"/>
+		<attr format="integer" name="inputLength"/>
+		<attr name="android:inputType"/>
+	</declare-styleable>
+
+</resources>

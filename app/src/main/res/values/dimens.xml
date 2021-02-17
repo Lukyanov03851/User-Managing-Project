@@ -9,4 +9,5 @@
     <dimen name="margin_activity_half">8dp</dimen>
     <dimen name="margin_view_small">4dp</dimen>
     <dimen name="margin_activity">16dp</dimen>
+    <dimen name="margin_double">32dp</dimen>
 </resources>

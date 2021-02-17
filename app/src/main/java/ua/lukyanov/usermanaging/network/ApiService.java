@@ -3,9 +3,13 @@ package ua.lukyanov.usermanaging.network;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import ua.lukyanov.usermanaging.network.models.LoginRequest;
 import ua.lukyanov.usermanaging.network.models.LoginResponse;
+import ua.lukyanov.usermanaging.network.models.ProfilePropertiesResponse;
 import ua.lukyanov.usermanaging.network.models.RegistrationRequest;
 
 public interface ApiService {
@@ -15,4 +19,8 @@ public interface ApiService {
 
     @POST("users/register")
     Call<ResponseBody> register(@Body RegistrationRequest registerRequest);
+
+    @GET("users/{userId}")
+    Call<ProfilePropertiesResponse> obtainUserProperties(@Path("userId") String userId, @Query("props") String properties);
+
 }

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,22 +19,20 @@ import retrofit2.Response;
 import ua.lukyanov.usermanaging.R;
 import ua.lukyanov.usermanaging.network.ApiService;
 import ua.lukyanov.usermanaging.network.models.RegistrationRequest;
+import ua.lukyanov.usermanaging.utils.Utils;
 
 public class RegistrationViewModel extends AndroidViewModel {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
-    private MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isSuccessRegistration = new MutableLiveData<>();
-    private MutableLiveData<String> dataLoadingErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> nameErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> passwordErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> passwordRepeatErrorMessage = new MutableLiveData<>();
+    public ObservableField<String> loginErrorMessage = new ObservableField<>();
+    public ObservableField<String> nameErrorMessage = new ObservableField<>();
+    public ObservableField<String> passwordErrorMessage = new ObservableField<>();
+    public ObservableField<String> passwordRepeatErrorMessage = new ObservableField<>();
+    public ObservableBoolean isLoading = new ObservableBoolean();
 
-    public LiveData<Boolean> isLoading() {
-        return dataLoading;
-    }
+    private final MutableLiveData<Boolean> isSuccessRegistration = new MutableLiveData<>();
+    private final MutableLiveData<String> dataLoadingErrorMessage = new MutableLiveData<>();
 
     public LiveData<Boolean> isSuccessRegistration() {
         return isSuccessRegistration;
@@ -40,22 +40,6 @@ public class RegistrationViewModel extends AndroidViewModel {
 
     public LiveData<String> getErrorMessage() {
         return dataLoadingErrorMessage;
-    }
-
-    public LiveData<String> getLoginErrorMessage() {
-        return loginErrorMessage;
-    }
-
-    public LiveData<String> getNameErrorMessage() {
-        return nameErrorMessage;
-    }
-
-    public LiveData<String> getPasswordErrorMessage() {
-        return passwordErrorMessage;
-    }
-
-    public LiveData<String> getPasswordRepeatErrorMessage() {
-        return passwordRepeatErrorMessage;
     }
 
     @Inject
@@ -66,22 +50,22 @@ public class RegistrationViewModel extends AndroidViewModel {
 
     public void makeRegistration(String name, String email, String password, String passwordRepeat) {
         if (validateInputs(name, email, password, passwordRepeat)) {
-            dataLoading.setValue(true);
+            isLoading.set(true);
             apiService.register(new RegistrationRequest(name, email, password)).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                    dataLoading.setValue(false);
+                    isLoading.set(false);
                     if (response.isSuccessful()) {
                         isSuccessRegistration.setValue(true);
                     } else {
-                        dataLoadingErrorMessage.setValue("Something was wrong");
+                        dataLoadingErrorMessage.setValue(Utils.processError(response.errorBody(), getApplication()));
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    dataLoading.setValue(false);
-                    dataLoadingErrorMessage.setValue("Something was wrong");
+                    isLoading.set(false);
+                    dataLoadingErrorMessage.setValue(getApplication().getString(R.string.common_error));
                 }
 
             });
@@ -92,35 +76,35 @@ public class RegistrationViewModel extends AndroidViewModel {
         boolean valid = true;
 
         if (TextUtils.isEmpty(name)) {
-            nameErrorMessage.setValue(getApplication().getString(R.string.enter_name));
+            nameErrorMessage.set(getApplication().getString(R.string.enter_name));
             valid = false;
         } else {
-            nameErrorMessage.setValue(null);
+            nameErrorMessage.set(null);
         }
 
         if (TextUtils.isEmpty(email)) {
-            loginErrorMessage.setValue(getApplication().getString(R.string.enter_email));
+            loginErrorMessage.set(getApplication().getString(R.string.enter_email));
             valid = false;
         } else {
-            loginErrorMessage.setValue(null);
+            loginErrorMessage.set(null);
         }
 
         if (TextUtils.isEmpty(password)) {
-            passwordErrorMessage.setValue(getApplication().getString(R.string.enter_password));
+            passwordErrorMessage.set(getApplication().getString(R.string.enter_password));
             valid = false;
         } else {
-            passwordErrorMessage.setValue(null);
+            passwordErrorMessage.set(null);
         }
 
         if (TextUtils.isEmpty(passwordRepeat)) {
-            passwordRepeatErrorMessage.setValue(getApplication().getString(R.string.enter_password_repeat));
+            passwordRepeatErrorMessage.set(getApplication().getString(R.string.enter_password_repeat));
             valid = false;
         } else {
-            passwordRepeatErrorMessage.setValue(null);
+            passwordRepeatErrorMessage.set(null);
         }
 
         if (valid && !password.equals(passwordRepeat)) {
-            passwordRepeatErrorMessage.setValue(getApplication().getString(R.string.repeat_password_error));
+            passwordRepeatErrorMessage.set(getApplication().getString(R.string.repeat_password_error));
             valid = false;
         }
 

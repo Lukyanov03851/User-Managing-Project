@@ -2,7 +2,7 @@ package ua.lukyanov.usermanaging.network.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class LoginResponse{
     @SerializedName("name")
     String name;
 

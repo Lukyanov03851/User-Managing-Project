@@ -1,7 +1,11 @@
 package ua.lukyanov.usermanaging.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,68 +15,104 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
 
 import ua.lukyanov.usermanaging.R;
 
 public class BaseInputView extends LinearLayout {
 
-    protected Context context;
-
     protected TextView tvTitle;
-    protected EditText input;
-    protected TextView tooltip;
+    protected EditText edInput;
+    protected TextView tvSubtitle;
     protected ImageView icon;
 
-    private String tooltipText = null;
+    protected String inputTitle = "";
+    private String inputHint = "";
+    private String inputSubtitle = "";
+    private int inputLength = 0;
+    private int inputType = InputType.TYPE_CLASS_TEXT;
 
     public BaseInputView(Context context) {
         super(context);
-        this.context = context;
     }
 
     public BaseInputView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
+        initView(attrs);
     }
 
     public BaseInputView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
+        initView(attrs);
     }
 
-    protected void initView(String title, String hint){
+    private void initView(AttributeSet attrs) {
         setOrientation(VERTICAL);
-        LayoutInflater.from(context).inflate(R.layout.view_input_layout, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_input_layout, this, true);
+
+        TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.BaseInputView, 0, 0);
+
+        if (typedArray.hasValue(R.styleable.BaseInputView_inputTitle)){
+            inputTitle = typedArray.getString(R.styleable.BaseInputView_inputTitle);
+        }
+
+        if (typedArray.hasValue(R.styleable.BaseInputView_inputSubtitle)){
+            inputSubtitle = typedArray.getString(R.styleable.BaseInputView_inputSubtitle);
+        }
+
+        if (typedArray.hasValue(R.styleable.BaseInputView_inputHint)){
+            inputHint = typedArray.getString(R.styleable.BaseInputView_inputHint);
+        }
+
+        if (typedArray.hasValue(R.styleable.BaseInputView_inputLength)){
+            inputLength = typedArray.getInt(R.styleable.BaseInputView_inputLength, 0);
+        }
+
+        if (typedArray.hasValue(R.styleable.BaseInputView_android_inputType)){
+            inputType = typedArray.getInt(R.styleable.BaseInputView_android_inputType, InputType.TYPE_CLASS_TEXT);
+        }
+
+        initView();
+    }
+
+    protected void initView(){
+
         tvTitle = findViewById(R.id.tv_input_title);
-        input = findViewById(R.id.edt_input);
-        tooltip = findViewById(R.id.tvTooltip);
+        edInput = findViewById(R.id.edt_input);
+        tvSubtitle = findViewById(R.id.tvSubtitle);
         icon = findViewById(R.id.img_input);
 
-        tvTitle.setText(title);
-        input.setHint(hint);
+        tvTitle.setText(inputTitle);
+        edInput.setHint(inputHint);
+
+        if (inputLength > 0){
+            setMaxLength(inputLength);
+        }
+
+        setInputType(inputType);
     }
 
-    public void setTooltipText(int tooltipTextRes){
-        setTooltipText(context.getString(tooltipTextRes));
+    public void setSubtitleText(int subtitleText){
+        setSubtitleText(getContext().getString(subtitleText));
     }
 
-    public void setTooltipText(String tooltipText){
-        this.tooltipText = tooltipText;
-        tooltip.setText(tooltipText);
-        tooltip.setVisibility(View.VISIBLE);
+    public void setSubtitleText(String subtitleText){
+        this.inputSubtitle = subtitleText;
+        tvSubtitle.setText(subtitleText);
+        tvSubtitle.setVisibility(View.VISIBLE);
     }
 
-    public void hideTooltipText(){
-        tooltip.setVisibility(View.GONE);
+    public void hideSubtitleText(){
+        tvSubtitle.setVisibility(View.GONE);
     }
 
     public void showError(String msgError){
         if (msgError != null) {
-            tooltip.setText(msgError);
-            tooltip.setVisibility(View.VISIBLE);
-            tooltip.setTextColor(ContextCompat.getColor(context, R.color.inputErrorColor));
-            input.setBackgroundResource(R.drawable.input_error_background);
-            tvTitle.setTextColor(ContextCompat.getColor(context, R.color.inputErrorColor));
+            tvSubtitle.setText(msgError);
+            tvSubtitle.setVisibility(View.VISIBLE);
+            tvSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.inputErrorColor));
+            edInput.setBackgroundResource(R.drawable.input_error_background);
+            tvTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.inputErrorColor));
             icon.setImageResource(R.drawable.ic_error_icon);
             icon.setVisibility(View.VISIBLE);
         } else {
@@ -81,15 +121,16 @@ public class BaseInputView extends LinearLayout {
     }
 
     public void hideError(){
-        input.setBackgroundResource(R.drawable.input_selector_background);
-        tvTitle.setTextColor(ContextCompat.getColor(context, R.color.textColor));
+        edInput.setBackgroundResource(R.drawable.input_selector_background);
+        tvTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
 
-        if (tooltipText != null) {
-            tooltip.setTextColor(ContextCompat.getColor(context, R.color.textColor));
-            tooltip.setText(tooltipText);
+        if (inputSubtitle != null) {
+            tvSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
+            tvSubtitle.setText(inputSubtitle);
         } else {
-            tooltip.setVisibility(View.GONE);
+            tvSubtitle.setVisibility(View.GONE);
         }
+        icon.setVisibility(View.GONE);
     }
 
     public void setTitle(String text) {
@@ -97,28 +138,50 @@ public class BaseInputView extends LinearLayout {
     }
 
     public void setText(String text) {
-        input.setText(text);
+        edInput.setText(text);
     }
 
     public String getText() {
-        return input.getText().toString().trim();
+        return edInput.getText().toString().trim();
     }
 
     public void setInputSize(int size){
-        this.input.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(size) });
+        this.edInput.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(size) });
     }
 
     public void setInputType(int inputType){
-        input.setInputType(inputType);
+        edInput.setInputType(inputType);
     }
 
     public EditText getInputView(){
-        return input;
+        return edInput;
+    }
+
+    public void setMaxLength(int maxLength){
+        addInputFilter(new InputFilter.LengthFilter(maxLength));
+    }
+
+    public void addTextWatcher(TextWatcher textWatcher){
+        edInput.addTextChangedListener(textWatcher);
+    }
+
+    public void addKeyListener(KeyListener listener){
+        edInput.setKeyListener(listener);
+    }
+
+    private void addInputFilter(InputFilter filter){
+        InputFilter[] fArray = edInput.getFilters();
+        InputFilter[] newArray = new InputFilter[fArray.length+1];
+
+        System.arraycopy(fArray, 0, newArray, 0, fArray.length);
+
+        newArray[fArray.length] = filter;
+        edInput.setFilters(newArray);
     }
 
     @Override
     public void setOnFocusChangeListener(OnFocusChangeListener l) {
-        input.setOnFocusChangeListener(l);
+        edInput.setOnFocusChangeListener(l);
     }
 
 }

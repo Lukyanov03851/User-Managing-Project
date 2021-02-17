@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">UserManagingProject</string>
+
     <string name="login">Login</string>
     <string name="registration">Registration</string>
     <string name="password">Password</string>
     <string name="phone_number">Phone number</string>
-<!--    <string name="phone_number_mask_country" translatable="false">+38</string>-->
-<!--    <string name="phone_number_country_code" translatable="false">38</string>-->
     <string name="email">Email</string>
     <string name="enter_email">Enter email</string>
     <string name="enter_password">Enter password</string>
@@ -19,5 +18,9 @@
     <string name="repeat_password">Repeat password</string>
     <string name="registration_success">Registration success</string>
     <string name="my_profile">My profile</string>
+    <string name="common_error">Something was wrong!</string>
+    <string name="not_specified">Not specified</string>
+    <string name="password_mask">***********</string>
+    <string name="address">Address</string>
 
 </resources>
