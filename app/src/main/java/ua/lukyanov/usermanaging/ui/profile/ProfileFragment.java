@@ -1,7 +1,6 @@
 package ua.lukyanov.usermanaging.ui.profile;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import ua.lukyanov.usermanaging.R;
-import ua.lukyanov.usermanaging.adapters.UserPropertiesAdapter;
+import ua.lukyanov.usermanaging.ui.adapters.UserPropertiesAdapter;
 import ua.lukyanov.usermanaging.databinding.FragmentProfileBinding;
 import ua.lukyanov.usermanaging.ui.BaseFragment;
 
@@ -32,7 +30,7 @@ public class ProfileFragment extends BaseFragment {
 
     FragmentProfileBinding binding;
 
-    private UserPropertiesAdapter propertiesAdapter = new UserPropertiesAdapter();
+    private final UserPropertiesAdapter propertiesAdapter = new UserPropertiesAdapter();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

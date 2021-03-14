@@ -1,4 +1,4 @@
-package ua.lukyanov.usermanaging.network.models;
+package ua.lukyanov.usermanaging.network.model.response;
 
 import com.google.gson.annotations.SerializedName;
 

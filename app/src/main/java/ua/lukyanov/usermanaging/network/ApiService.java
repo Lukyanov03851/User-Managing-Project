@@ -7,10 +7,10 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import ua.lukyanov.usermanaging.network.models.LoginRequest;
-import ua.lukyanov.usermanaging.network.models.LoginResponse;
-import ua.lukyanov.usermanaging.network.models.ProfilePropertiesResponse;
-import ua.lukyanov.usermanaging.network.models.RegistrationRequest;
+import ua.lukyanov.usermanaging.network.model.request.LoginRequest;
+import ua.lukyanov.usermanaging.network.model.response.LoginResponse;
+import ua.lukyanov.usermanaging.network.model.response.ProfilePropertiesResponse;
+import ua.lukyanov.usermanaging.network.model.request.RegistrationRequest;
 
 public interface ApiService {
 

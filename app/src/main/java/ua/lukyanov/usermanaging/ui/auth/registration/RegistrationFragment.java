@@ -1,5 +1,6 @@
 package ua.lukyanov.usermanaging.ui.auth.registration;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,21 +56,29 @@ public class RegistrationFragment extends BaseFragment {
                         binding.inputPassword.getText(),
                         binding.inputPasswordRepeat.getText()));
 
-        binding.btnCancel.setOnClickListener(v ->
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_cancel));
+        binding.btnCancel.setOnClickListener(v -> getActivity().onBackPressed());
     }
 
     private void observeViewModel() {
         mRegisterViewModel.isSuccessRegistration().observe(getViewLifecycleOwner(), isSuccess -> {
-            if (isSuccess && getView() != null) {
-                Toast.makeText(getContext(), R.string.registration_success, Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(getView()).navigate(R.id.action_cancel);
-            }
+            showRegistrationSuccessDialog();
         });
 
         mRegisterViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMsg ->
                 showMessageDialog(getString(R.string.error), errorMsg, getString(R.string.cancel)));
 
+    }
+
+    private void showRegistrationSuccessDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.registration_success);
+
+        builder.setMessage(R.string.registration_success_message)
+                .setPositiveButton(R.string.action_continue, (dialog, which) -> {
+                    dialog.dismiss();
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_continue);
+                })
+                .show();
     }
 
 

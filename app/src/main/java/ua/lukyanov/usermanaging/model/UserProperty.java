@@ -1,4 +1,4 @@
-package ua.lukyanov.usermanaging.models;
+package ua.lukyanov.usermanaging.model;
 
 public class UserProperty {
     private String title;

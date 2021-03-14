@@ -1,4 +1,4 @@
-package ua.lukyanov.usermanaging.adapters;
+package ua.lukyanov.usermanaging.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.lukyanov.usermanaging.R;
-import ua.lukyanov.usermanaging.models.UserProperty;
+import ua.lukyanov.usermanaging.model.UserProperty;
 
 public class UserPropertiesAdapter extends RecyclerView.Adapter<UserPropertiesAdapter.ViewHolder> {
 

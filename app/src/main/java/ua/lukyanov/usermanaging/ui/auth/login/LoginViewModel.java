@@ -19,8 +19,8 @@ import retrofit2.Response;
 import ua.lukyanov.usermanaging.R;
 import ua.lukyanov.usermanaging.data.prefs.AppPreferenceHelper;
 import ua.lukyanov.usermanaging.network.ApiService;
-import ua.lukyanov.usermanaging.network.models.LoginRequest;
-import ua.lukyanov.usermanaging.network.models.LoginResponse;
+import ua.lukyanov.usermanaging.network.model.request.LoginRequest;
+import ua.lukyanov.usermanaging.network.model.response.LoginResponse;
 
 public class LoginViewModel extends AndroidViewModel {
 
@@ -55,7 +55,6 @@ public class LoginViewModel extends AndroidViewModel {
             apiService.login(new LoginRequest(email, password)).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-                    isLoading.set(false);
                     processLoginResponse(response);
                 }
 
@@ -72,7 +71,6 @@ public class LoginViewModel extends AndroidViewModel {
 
     private void processLoginResponse(Response<LoginResponse> response){
         LoginResponse loginResponse = response.body();
-        Log.v(TAG, "LoginResponse = "+loginResponse);
 
         if (response.isSuccessful() && loginResponse != null) {
             AppPreferenceHelper.setToken(getApplication(), loginResponse.getToken());
@@ -80,10 +78,9 @@ public class LoginViewModel extends AndroidViewModel {
             AppPreferenceHelper.setUserObjectId(getApplication(), loginResponse.getObjectId());
             isSuccessLogin.setValue(true);
         } else  {
+            isLoading.set(false);
             dataLoadingErrorMessage.setValue(getApplication().getString(R.string.common_error));
         }
-
-
     }
 
     private boolean validateInputs(String email, String password) {

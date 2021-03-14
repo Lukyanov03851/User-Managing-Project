@@ -14,8 +14,8 @@ import ua.lukyanov.usermanaging.network.ApiService;
 public class NetworkModule {
 
     private static final String API_BASE_URL = "https://eu-api.backendless.com/";
-    private static final String REST_APP_ID = "B7CC6BB0-994E-1E0D-FFDB-EEA568D04700";
-    private static final String REST_API_KEY = "EBD1B69F-60D4-413B-9752-8B8BFB0B5B19";
+    private static final String REST_APP_ID = "67E36E68-EFEB-FA00-FF96-BB9DDB586E00";
+    private static final String REST_API_KEY = "97C6F541-058E-44C2-8EEC-A820D343D984";
 
     private String getApiUrl()  {
         return API_BASE_URL + REST_APP_ID + "/" + REST_API_KEY + "/";

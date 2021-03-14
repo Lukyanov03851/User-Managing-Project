@@ -72,8 +72,4 @@ public class PasswordInputView extends BaseInputView {
         }
         icon.setVisibility(View.VISIBLE);
     }
-
-    public void setFocus(){
-        edInput.requestFocus();
-    }
 }

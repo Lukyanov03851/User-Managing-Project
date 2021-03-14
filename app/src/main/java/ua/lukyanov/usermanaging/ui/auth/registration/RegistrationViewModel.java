@@ -17,8 +17,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ua.lukyanov.usermanaging.R;
+import ua.lukyanov.usermanaging.data.prefs.AppPreferenceHelper;
 import ua.lukyanov.usermanaging.network.ApiService;
-import ua.lukyanov.usermanaging.network.models.RegistrationRequest;
+import ua.lukyanov.usermanaging.network.model.request.RegistrationRequest;
 import ua.lukyanov.usermanaging.utils.Utils;
 
 public class RegistrationViewModel extends AndroidViewModel {
@@ -56,6 +57,7 @@ public class RegistrationViewModel extends AndroidViewModel {
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     isLoading.set(false);
                     if (response.isSuccessful()) {
+                        AppPreferenceHelper.setLogin(getApplication(), email);
                         isSuccessRegistration.setValue(true);
                     } else {
                         dataLoadingErrorMessage.setValue(Utils.processError(response.errorBody(), getApplication()));

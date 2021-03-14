@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 
 import ua.lukyanov.usermanaging.R;
+import ua.lukyanov.usermanaging.utils.Utils;
 
 public class BaseInputView extends LinearLayout {
 
@@ -177,6 +178,10 @@ public class BaseInputView extends LinearLayout {
 
         newArray[fArray.length] = filter;
         edInput.setFilters(newArray);
+    }
+
+    public void setFocus(){
+        Utils.showKeyboard(edInput);
     }
 
     @Override

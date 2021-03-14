@@ -24,6 +24,7 @@ import ua.lukyanov.usermanaging.ui.BaseFragment;
 public class LoginFragment extends BaseFragment {
 
     private static final String TAG = "LoginFragment";
+    private static final String ARG_SUCCESS_REGISTRATION = "success_registration";
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -46,7 +47,6 @@ public class LoginFragment extends BaseFragment {
         binding.setViewModel(mLoginViewModel);
         binding.setLifecycleOwner(this);
 
-        setupInput();
         setupButtons();
         observeViewModel();
 
@@ -63,10 +63,18 @@ public class LoginFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupInput();
+    }
+
     private void setupInput(){
         if (AppPreferenceHelper.containsLogin(getContext())){
             binding.inputLogin.setText(AppPreferenceHelper.getLogin(getContext()));
             binding.inputPassword.setFocus();
+        } else {
+            binding.inputLogin.setFocus();
         }
     }
 
@@ -79,7 +87,6 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void observeViewModel() {
-
         mLoginViewModel.isSuccessLogin().observe(getViewLifecycleOwner(), isSuccess -> {
             if (isSuccess){
                 Log.v(TAG, "Login success");
@@ -93,7 +100,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     public interface OnLoginSuccessInteraction{
-        public void onLoginSuccess();
+        void onLoginSuccess();
     }
 
 }

@@ -20,9 +20,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ua.lukyanov.usermanaging.R;
 import ua.lukyanov.usermanaging.data.prefs.AppPreferenceHelper;
-import ua.lukyanov.usermanaging.models.UserProperty;
+import ua.lukyanov.usermanaging.model.UserProperty;
 import ua.lukyanov.usermanaging.network.ApiService;
-import ua.lukyanov.usermanaging.network.models.ProfilePropertiesResponse;
+import ua.lukyanov.usermanaging.network.model.response.ProfilePropertiesResponse;
 import ua.lukyanov.usermanaging.utils.Utils;
 
 public class ProfileViewModel extends AndroidViewModel {
